@@ -1,0 +1,39 @@
+.user-card {
+  background-color: #d9d9d9;
+  padding: 10px;
+  border-radius: 15px;
+  margin-top: 10px;
+  cursor: grab;
+}
+.user-card .user-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+.status {
+  margin-top: 3px;
+}
+.status span {
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin-right: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+.status .state {
+  background-color: #0183bf;
+}
+.status .prescent {
+  background-color: #9f58a3;
+}
+.user-card p {
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+.user-info {
+  margin-top: 10px;
+  color: rgb(27, 27, 27);
+}
+.user-info p span {
+  font-weight: bold;
+}

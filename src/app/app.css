@@ -1,0 +1,26 @@
+header {
+  height: 42px;
+  background-color: #1b1f23;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo img {
+  height: 35px;
+}
+.nav-btn {
+  background-color: #4d5fab;
+  padding: 5px 10px;
+  margin-left: 10px;
+  color: white;
+  border-radius: 20px;
+  font-size: 15px;
+}
+.nav-btn.active {
+  background-color: #9f58a3;
+  outline: 2px solid #f882ff;
+}
+.nav-btn:hover {
+  outline: 2px solid #f882ff;
+}

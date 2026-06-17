@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.search {
+  position: relative;
+  margin-top: 8px;
+}
+.search input {
+  width: 400px;
+  height: 30px;
+  border-radius: 17px;
+  border: none;
+  padding: 0px 10px 0 40px;
+  background-color: rgb(205, 205, 205);
+  font-weight: bold;
+}
+.search img {
+  width: 20px;
+  position: absolute;
+  top: 5px;
+  left: 15px;
+}
+.deals-main-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+.deals-main-cards .column-container {
+  width: 210px;
+  background-color: #272727;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+}
+.column-container h3 {
+  color: white;
+  font-size: 19px;
+  margin-bottom: 5px;
+}
+.column-contient {
+  overflow: auto;
+  height: 480px;
+  scrollbar-width: none;
+}
+.app-user-card {
+  scrollbar-width: none;
+}
+.error {
+  font-size: 30px;
+  color: white;
+  margin-top: 100px;
+}

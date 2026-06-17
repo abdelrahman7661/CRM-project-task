@@ -1,0 +1,13 @@
+<div class="user-card">
+  <p class="user-name">{{ userCardData()?.first_name }} {{ userCardData()?.last_name }}</p>
+  <div class="status">
+    <span class="state">{{ userCardData()?.state }}</span>
+    <span class="prescent">{{ userCardData()?.probability_status }}</span>
+  </div>
+  <div class="user-info">
+    <p><span>Phone: </span>{{ userCardData()?.phone }}</p>
+    <p><span>Email: </span> {{ userCardData()?.email }}</p>
+    <p><span>Company: </span> {{ userCardData()?.company }}</p>
+    <p><span>Date: </span> {{ userCardData()?.date | date: 'mediumDate' }}</p>
+  </div>
+</div>

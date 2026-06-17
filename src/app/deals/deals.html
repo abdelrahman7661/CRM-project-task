@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="search">
+    <img src="search.png" alt="" />
+    <input
+      type="text"
+      id="Search"
+      placeholder="Search Contacts"
+      (keyup)="search()"
+      [(ngModel)]="searchValue"
+    />
+  </div>
+  @if (!errorMessage() && !loading()) {
+    <div class="deals-main-cards" cdkDropListGroup>
+      <div class="column-container">
+        <h3>Potential Value</h3>
+        <div
+          class="column-contient"
+          cdkDropList
+          [cdkDropListData]="Potential_Value()"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (value of Potential_Value(); track $index) {
+            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          }
+        </div>
+      </div>
+      <div class="column-container">
+        <h3>Focus</h3>
+        <div
+          class="column-contient"
+          cdkDropList
+          [cdkDropListData]="Focus()"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (value of Focus(); track $index) {
+            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          }
+        </div>
+      </div>
+      <div
+        class="column-container"
+        cdkDropList
+        [cdkDropListData]="Contact_Made()"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <h3>Contact Made</h3>
+        <div class="column-contient">
+          @for (value of Contact_Made(); track $index) {
+            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          }
+        </div>
+      </div>
+      <div class="column-container">
+        <h3>Offer Sent</h3>
+        <div
+          class="column-contient"
+          cdkDropList
+          [cdkDropListData]="Offer_Sent()"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (value of Offer_Sent(); track $index) {
+            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          }
+        </div>
+      </div>
+      <div class="column-container">
+        <h3>Getting Ready</h3>
+        <div
+          class="column-contient"
+          cdkDropList
+          [cdkDropListData]="Getting_Ready()"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (value of Getting_Ready(); track $index) {
+            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          }
+        </div>
+      </div>
+    </div>
+  }
+  @if (errorMessage()) {
+    <h2 class="error">Check your internet connection...</h2>
+  }
+  @if (loading() && !errorMessage()) {
+    <h2 class="error">Loading...</h2>
+  }
+</div>
