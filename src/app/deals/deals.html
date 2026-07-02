@@ -1,6 +1,4 @@
 <div class="container">
-  <!-- to show the rest problem -->
-  <button (click)="rest()">Rest</button>
   <div class="search">
     <img src="search.png" alt="" />
     <input
@@ -10,7 +8,9 @@
       (keyup)="search_v2()"
       [(ngModel)]="searchValue"
     />
-    <button class="search-btn" (click)="clearSearchValue()">Clear</button>
+    @if (searchValue().length !== 0) {
+      <button class="search-btn" (click)="clearSearchValue()">Clear</button>
+    }
     <button class="add-new-deal-btn" (click)="deal_popup()">Add New Deal</button>
   </div>
   <!-- --------------search result area -->
