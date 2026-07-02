@@ -26,11 +26,11 @@ export class Services {
       tap({
         next: (users) => {
           this.users_Deals_Data.set(users.deals);
-          this.filter_api_data();
 
           if (window.localStorage.length == 0) {
             this.filterDeals();
             this.create_save();
+            this.filter_api_data();
           }
         },
         complete: () => {
