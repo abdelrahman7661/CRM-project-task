@@ -1,78 +1,115 @@
 <div class="container">
+  <!-- to show the rest problem -->
+  <button (click)="rest()">Rest</button>
   <div class="search">
     <img src="search.png" alt="" />
     <input
       type="text"
       id="Search"
       placeholder="Search Contacts"
-      (keyup)="search()"
+      (keyup)="search_v2()"
       [(ngModel)]="searchValue"
     />
+    <button class="search-btn" (click)="clearSearchValue()">Clear</button>
+    <button class="add-new-deal-btn" (click)="deal_popup()">Add New Deal</button>
   </div>
+  <!-- --------------search result area -->
+  @if (showSearchResultCard) {
+    <div class="search-result">
+      @for (value of searchResultValue(); track $index) {
+        <app-user-card class="user-card" [userCardData]="value" class="tests" />
+      }
+    </div>
+  }
   @if (!errorMessage() && !loading()) {
     <div class="deals-main-cards" cdkDropListGroup>
       <div class="column-container">
         <h3>Potential Value</h3>
         <div
-          class="column-contient"
+          class="column-content"
           cdkDropList
-          [cdkDropListData]="Potential_Value()"
-          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="services.Potential_Value()"
+          (cdkDropListDropped)="services.drop($event)"
         >
-          @for (value of Potential_Value(); track $index) {
-            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          @for (value of services.Potential_Value(); track $index) {
+            <app-user-card
+              [userCardData]="value"
+              status="Potential Value"
+              cdkDrag
+              class="app-user-card"
+            />
+            <span class="space"></span>
           }
         </div>
       </div>
       <div class="column-container">
         <h3>Focus</h3>
         <div
-          class="column-contient"
+          class="column-content"
           cdkDropList
-          [cdkDropListData]="Focus()"
-          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="services.Focus()"
+          (cdkDropListDropped)="services.drop($event)"
         >
-          @for (value of Focus(); track $index) {
-            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          @for (value of services.Focus(); track $index) {
+            <app-user-card [userCardData]="value" status="Focus" cdkDrag class="app-user-card" />
+            <span class="space"></span>
           }
         </div>
       </div>
       <div
         class="column-container"
         cdkDropList
-        [cdkDropListData]="Contact_Made()"
-        (cdkDropListDropped)="drop($event)"
+        [cdkDropListData]="services.Contact_Made()"
+        (cdkDropListDropped)="services.drop($event)"
       >
         <h3>Contact Made</h3>
-        <div class="column-contient">
-          @for (value of Contact_Made(); track $index) {
-            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+        <div class="column-content">
+          @for (value of services.Contact_Made(); track $index) {
+            <app-user-card
+              [userCardData]="value"
+              status="Contact Made"
+              cdkDrag
+              class="app-user-card"
+            />
+            <span class="space"></span>
           }
         </div>
       </div>
       <div class="column-container">
         <h3>Offer Sent</h3>
         <div
-          class="column-contient"
+          class="column-content"
           cdkDropList
-          [cdkDropListData]="Offer_Sent()"
-          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="services.Offer_Sent()"
+          (cdkDropListDropped)="services.drop($event)"
         >
-          @for (value of Offer_Sent(); track $index) {
-            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          @for (value of services.Offer_Sent(); track $index) {
+            <app-user-card
+              [userCardData]="value"
+              status="Offer Sent"
+              cdkDrag
+              class="app-user-card"
+            />
+            <span class="space"></span>
           }
         </div>
       </div>
       <div class="column-container">
         <h3>Getting Ready</h3>
         <div
-          class="column-contient"
+          class="column-content"
           cdkDropList
-          [cdkDropListData]="Getting_Ready()"
-          (cdkDropListDropped)="drop($event)"
+          [cdkDropListData]="services.Getting_Ready()"
+          (cdkDropListDropped)="services.drop($event)"
         >
-          @for (value of Getting_Ready(); track $index) {
-            <app-user-card [userCardData]="value" cdkDrag class="app-user-card" />
+          @for (value of services.Getting_Ready(); track $index) {
+            <app-user-card
+              [userCardData]="value"
+              status="Getting Ready"
+              cdkDrag
+              class="app-user-card"
+            />
+            <span class="space"></span>
           }
         </div>
       </div>
@@ -85,3 +122,7 @@
     <h2 class="error">Loading...</h2>
   }
 </div>
+<!-- new deal popup -->
+@if (showNewDealPopup) {
+  <app-new-deal-popup #child (close)="close_deal_popup()" />
+}

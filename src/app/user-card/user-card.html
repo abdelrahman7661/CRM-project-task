@@ -2,7 +2,9 @@
   <p class="user-name">{{ userCardData()?.first_name }} {{ userCardData()?.last_name }}</p>
   <div class="status">
     <span class="state">{{ userCardData()?.state }}</span>
-    <span class="prescent">{{ userCardData()?.probability_status }}</span>
+    <span class="percentage">{{ userCardData()?.probability_status }}</span>
+    <!-- <span class="status_val">{{ userCardData()?.status }}</span> -->
+    <span class="status_val">{{ status() }}</span>
   </div>
   <div class="user-info">
     <p><span>Phone: </span>{{ userCardData()?.phone }}</p>

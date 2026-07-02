@@ -10,4 +10,5 @@ import { CommonModule } from '@angular/common';
 })
 export class UserCard {
   userCardData = input<DealsType>();
+  status = input<string>('');
 }

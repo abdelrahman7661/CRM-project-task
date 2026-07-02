@@ -2,8 +2,9 @@
   background-color: #d9d9d9;
   padding: 10px;
   border-radius: 15px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   cursor: grab;
+  max-width: 210px;
 }
 .user-card .user-name {
   font-size: 16px;
@@ -11,6 +12,9 @@
 }
 .status {
   margin-top: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 .status span {
   padding: 2px 5px;
@@ -20,11 +24,17 @@
   font-weight: bold;
   font-size: 12px;
 }
+.status span:last-of-type {
+  margin: 5px 0;
+}
 .status .state {
   background-color: #0183bf;
 }
-.status .prescent {
+.status .percentage {
   background-color: #9f58a3;
+}
+.status .status_val {
+  background-color: #c95aa1;
 }
 .user-card p {
   font-size: 13px;

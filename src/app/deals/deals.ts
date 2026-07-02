@@ -1,158 +1,69 @@
 import { Component, inject, signal } from '@angular/core';
 import { UserCard } from '../user-card/user-card';
 import { DealsType } from '../deals.interface';
-import { Services } from '../services';
-import {
-  CdkDrag,
-  CdkDropListGroup,
-  CdkDropList,
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDropListGroup, CdkDropList } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
+import { NewDealPopup } from '../new-deal-popup/new-deal-popup';
+import { Services } from '../services/services';
 
 @Component({
   selector: 'app-deals',
-  imports: [UserCard, CdkDrag, CdkDropListGroup, CdkDropList, FormsModule],
+  imports: [UserCard, CdkDrag, CdkDropListGroup, CdkDropList, FormsModule, NewDealPopup],
   templateUrl: './deals.html',
   styleUrl: './deals.css',
 })
 export class Deals {
-  private services = inject(Services);
-  usersDealsData = this.services.loadedUser;
-  Potential_Value = signal<DealsType[]>([]);
-  Focus = signal<DealsType[]>([]);
-  Contact_Made = signal<DealsType[]>([]);
-  Offer_Sent = signal<DealsType[]>([]);
-  Getting_Ready = signal<DealsType[]>([]);
+  protected services = inject(Services);
+
+  usersDealsData = signal<DealsType[]>([]);
 
   errorMessage = signal(false);
   loading = signal(true);
   searchValue = signal('');
+  searchResultValue = signal<DealsType[]>([]);
+  showSearchResultCard = false;
   disableDropFunc = false;
+  showNewDealPopup = false;
 
   ngOnInit() {
     this.services.getUsersData().subscribe({
-      next: () => {
-        this.filterDealsArray();
-      },
       error: () => {
         this.errorMessage.set(true);
       },
       complete: () => {
         this.loading.set(false);
-        this.getSavedDealsUsersData();
+        // console.log(this.services.users_Deals_Data());
+        console.log(this.services.Potential_Value());
       },
     });
   }
 
-  search() {
-    this.getSavedDealsUsersData();
-
-    let newPotentialValue = this.Potential_Value().filter((user) => {
-      return (
-        user.first_name.toLowerCase() == this.searchValue() ||
-        user.last_name.toLowerCase() == this.searchValue()
-      );
+  search_v2() {
+    this.showSearchResultCard = true;
+    let searchResultValue = this.services.users_Deals_Data().filter((user) => {
+      return user.first_name.toLowerCase().includes(this.searchValue());
     });
-    let newFocusValue = this.Focus().filter((user) => {
-      return (
-        user.first_name.toLowerCase() == this.searchValue() ||
-        user.last_name.toLowerCase() == this.searchValue()
-      );
-    });
-    let newContactValue = this.Contact_Made().filter((user) => {
-      return (
-        user.first_name.toLowerCase() == this.searchValue() ||
-        user.last_name.toLowerCase() == this.searchValue()
-      );
-    });
-    let newOfferValue = this.Offer_Sent().filter((user) => {
-      return (
-        user.first_name.toLowerCase() == this.searchValue() ||
-        user.last_name.toLowerCase() == this.searchValue()
-      );
-    });
-    let newGettingReadyValue = this.Getting_Ready().filter((user) => {
-      return (
-        user.first_name.toLowerCase() == this.searchValue() ||
-        user.last_name.toLowerCase() == this.searchValue()
-      );
-    });
-    // disable the drag func
-    this.disableDropFunc = true;
-
-    this.Potential_Value.set(newPotentialValue);
-    this.Focus.set(newFocusValue);
-    this.Contact_Made.set(newContactValue);
-    this.Offer_Sent.set(newOfferValue);
-    this.Getting_Ready.set(newGettingReadyValue);
-
-    // to rest the search
-    if (this.searchValue().length == 0) {
-      this.getSavedDealsUsersData();
-      this.disableDropFunc = false;
+    this.searchResultValue.set(searchResultValue);
+    // when to show the search card
+    if (this.searchValue().length == 0 || searchResultValue.length == 0) {
+      this.showSearchResultCard = false;
     }
   }
 
-  filterDealsArray() {
-    if (window.localStorage.length == 0) {
-      console.log('filter id conddition runned');
-      this.usersDealsData().map((e) => {
-        if (e.status == 'Potential Value') {
-          this.Potential_Value.update((prev) => [...prev, e]);
-        } else if (e.status == 'Focus') {
-          this.Focus.update((prev) => [...prev, e]);
-        } else if (e.status == 'Contact Made') {
-          this.Contact_Made.update((prev) => [...prev, e]);
-        } else if (e.status == 'Offer Sent') {
-          this.Offer_Sent.update((prev) => [...prev, e]);
-        } else if (e.status == 'Getting Ready') {
-          this.Getting_Ready.update((prev) => [...prev, e]);
-        }
-      });
-      this.save();
-    }
+  clearSearchValue() {
+    this.searchValue.set('');
+    this.search_v2();
   }
 
-  drop(event: CdkDragDrop<DealsType[]>) {
-    if (this.disableDropFunc) {
-      return;
-    }
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-    this.save();
+  deal_popup() {
+    this.showNewDealPopup = true;
   }
 
-  save() {
-    window.localStorage.setItem('Potential_Value', JSON.stringify(this.Potential_Value()));
-    window.localStorage.setItem('Focus', JSON.stringify(this.Focus()));
-    window.localStorage.setItem('Contact_Made', JSON.stringify(this.Contact_Made()));
-    window.localStorage.setItem('Offer_Sent', JSON.stringify(this.Offer_Sent()));
-    window.localStorage.setItem('Getting_Ready', JSON.stringify(this.Getting_Ready()));
+  close_deal_popup() {
+    this.showNewDealPopup = false;
+    console.log('closed');
   }
-
-  getSavedDealsUsersData() {
-    // get the data from localStorage
-    let Potential_Value = window.localStorage.getItem('Potential_Value') || '';
-    let Focus = window.localStorage.getItem('Focus') || '';
-    let Contact_Made = window.localStorage.getItem('Contact_Made') || '';
-    let Offer_Sent = window.localStorage.getItem('Offer_Sent') || '';
-    let Getting_Ready = window.localStorage.getItem('Getting_Ready') || '';
-    //update it
-    this.Potential_Value.set(JSON.parse(Potential_Value));
-    this.Focus.set(JSON.parse(Focus));
-    this.Contact_Made.set(JSON.parse(Contact_Made));
-    this.Offer_Sent.set(JSON.parse(Offer_Sent));
-    this.Getting_Ready.set(JSON.parse(Getting_Ready));
+  rest() {
+    window.localStorage.clear();
   }
 }
