@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { DealsType } from '../deals.interface';
+import { DealsType, new_deal_value_type } from '../deals.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,11 +21,12 @@ export class Services {
   Getting_Ready = signal<DealsType[]>([]);
 
   getUsersData() {
-    // this.users_Deals_Data.set([]);
+    // this.users_Deals_Data.set([]); >> a quick fix
     return this.http.get<{ deals: DealsType[] }>(this.api).pipe(
       tap({
         next: (users) => {
           this.users_Deals_Data.set(users.deals);
+          this.filter_api_data();
 
           if (window.localStorage.length == 0) {
             this.filterDeals();
@@ -35,10 +36,45 @@ export class Services {
         complete: () => {
           this.getSavedDealsUsersData();
           // console.log(this.users_Deals_Data());
-          console.log(this.Potential_Value());
+          // console.log(this.Potential_Value());
         },
       }),
     );
+  }
+
+  filter_api_data() {
+    let new_deals_value: new_deal_value_type = {
+      new_deals: {
+        Potential: [],
+        focus: [],
+        contact_made: [],
+        offer_sent: [],
+        getting_ready: [],
+      },
+    };
+
+    this.users_Deals_Data().map((value) => {
+      if (value.status == 'Potential Value') {
+        // Potential.push(value);
+        new_deals_value.new_deals.Potential.push(value);
+      } else if (value.status == 'Focus') {
+        // focus.push(value);
+        new_deals_value.new_deals.focus.push(value);
+      } else if (value.status == 'Contact Made') {
+        // contact_made.push(value);
+        new_deals_value.new_deals.contact_made.push(value);
+      } else if (value.status == 'Offer Sent') {
+        // offer_sent.push(value);
+        new_deals_value.new_deals.offer_sent.push(value);
+      } else if (value.status == 'Getting Ready') {
+        // getting_ready.push(value);
+        new_deals_value.new_deals.getting_ready.push(value);
+      }
+    });
+
+    // save to local storage
+    window.localStorage.setItem('new_deals_value', JSON.stringify(new_deals_value));
+    console.log(new_deals_value);
   }
 
   add_new_deal(status: string, deal_Data: any) {

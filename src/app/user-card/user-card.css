@@ -2,13 +2,23 @@
   background-color: #d9d9d9;
   padding: 10px;
   border-radius: 15px;
-  /* margin-top: 10px; */
   cursor: grab;
   max-width: 210px;
 }
 .user-card .user-name {
   font-size: 16px;
   font-weight: bold;
+}
+.user-card .name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.user-card .name img {
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  cursor: pointer;
 }
 .status {
   margin-top: 3px;

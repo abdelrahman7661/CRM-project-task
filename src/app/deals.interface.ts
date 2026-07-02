@@ -10,3 +10,12 @@ export interface DealsType {
   probability_status: string;
   state: string;
 }
+export interface new_deal_value_type {
+  new_deals: {
+    Potential: DealsType[];
+    focus: DealsType[];
+    contact_made: DealsType[];
+    offer_sent: DealsType[];
+    getting_ready: DealsType[];
+  };
+}

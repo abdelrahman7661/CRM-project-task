@@ -1,5 +1,8 @@
 <div class="user-card">
-  <p class="user-name">{{ userCardData()?.first_name }} {{ userCardData()?.last_name }}</p>
+  <span class="name">
+    <p class="user-name">{{ userCardData()?.first_name }} {{ userCardData()?.last_name }}</p>
+    <img src="edit.png" alt="edit" (click)="edit_deal()" />
+  </span>
   <div class="status">
     <span class="state">{{ userCardData()?.state }}</span>
     <span class="percentage">{{ userCardData()?.probability_status }}</span>

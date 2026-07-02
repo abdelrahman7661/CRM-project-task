@@ -33,7 +33,7 @@ export class Deals {
       complete: () => {
         this.loading.set(false);
         // console.log(this.services.users_Deals_Data());
-        console.log(this.services.Potential_Value());
+        // console.log(this.services.Potential_Value());
       },
     });
   }
