@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DealsType, new_deal_value_type } from '../deals.interface';
 
 @Injectable({
@@ -13,7 +12,6 @@ export class Services {
 
   users_Deals_Data = signal<DealsType[]>([]);
   testFromService = signal({});
-  // loadedUser = this.usersDealsData.asReadonly();
   Potential_Value = signal<DealsType[]>([]);
   Focus = signal<DealsType[]>([]);
   Contact_Made = signal<DealsType[]>([]);
@@ -29,14 +27,12 @@ export class Services {
 
           if (window.localStorage.length == 0) {
             this.filterDeals();
-            this.create_save();
             this.filter_api_data();
+            this.create_save('');
           }
         },
         complete: () => {
           this.getSavedDealsUsersData();
-          // console.log(this.users_Deals_Data());
-          // console.log(this.Potential_Value());
         },
       }),
     );
@@ -45,7 +41,7 @@ export class Services {
   filter_api_data() {
     let new_deals_value: new_deal_value_type = {
       new_deals: {
-        Potential: [],
+        potential: [],
         focus: [],
         contact_made: [],
         offer_sent: [],
@@ -55,41 +51,38 @@ export class Services {
 
     this.users_Deals_Data().map((value) => {
       if (value.status == 'Potential Value') {
-        // Potential.push(value);
-        new_deals_value.new_deals.Potential.push(value);
+        new_deals_value.new_deals.potential.push(value);
       } else if (value.status == 'Focus') {
-        // focus.push(value);
         new_deals_value.new_deals.focus.push(value);
       } else if (value.status == 'Contact Made') {
-        // contact_made.push(value);
         new_deals_value.new_deals.contact_made.push(value);
       } else if (value.status == 'Offer Sent') {
-        // offer_sent.push(value);
         new_deals_value.new_deals.offer_sent.push(value);
       } else if (value.status == 'Getting Ready') {
-        // getting_ready.push(value);
         new_deals_value.new_deals.getting_ready.push(value);
       }
     });
 
     // save to local storage
-    window.localStorage.setItem('new_deals_value', JSON.stringify(new_deals_value));
-    console.log(new_deals_value);
+    // window.localStorage.setItem('new_deals_value', JSON.stringify(new_deals_value));
+    this.create_save(new_deals_value);
   }
 
   add_new_deal(status: string, deal_Data: any) {
-    if (status == 'Potential Value') {
-      this.Potential_Value.update((prevData) => [deal_Data, ...prevData]);
-    } else if (status == 'Focus') {
-      this.Focus.update((prevData) => [deal_Data, ...prevData]);
-    } else if (status == 'Contact') {
-      this.Contact_Made.update((prevData) => [deal_Data, ...prevData]);
-    } else if (status == 'Offer Sent') {
-      this.Offer_Sent.update((prevData) => [deal_Data, ...prevData]);
-    } else if (status == 'Getting Ready') {
-      this.Getting_Ready.update((prevData) => [deal_Data, ...prevData]);
-    }
-    this.create_save();
+    // let value = window.localStorage.getItem('new_deals_value')!;
+    // // let old_deals_values = JSON.parse(value);
+    // if (status == 'Potential Value') {
+    //   this.Potential_Value.update((prevData) => [deal_Data, ...prevData]);
+    // } else if (status == 'Focus') {
+    //   this.Focus.update((prevData) => [deal_Data, ...prevData]);
+    // } else if (status == 'Contact') {
+    //   this.Contact_Made.update((prevData) => [deal_Data, ...prevData]);
+    // } else if (status == 'Offer Sent') {
+    //   this.Offer_Sent.update((prevData) => [deal_Data, ...prevData]);
+    // } else if (status == 'Getting Ready') {
+    //   this.Getting_Ready.update((prevData) => [deal_Data, ...prevData]);
+    // }
+    // this.create_save('');
   }
 
   filterDeals() {
@@ -107,28 +100,14 @@ export class Services {
       }
     });
   }
-  filterDeals_v2(data: DealsType[]) {
-    data.map((x) => {
-      if (x.status == 'Potential Value') {
-        this.Potential_Value.update((prev) => [...prev, x]);
-      } else if (x.status == 'Focus') {
-        this.Focus.update((prev) => [...prev, x]);
-      } else if (x.status == 'Contact Made') {
-        this.Contact_Made.update((prev) => [...prev, x]);
-      } else if (x.status == 'Offer Sent') {
-        this.Offer_Sent.update((prev) => [...prev, x]);
-      } else if (x.status == 'Getting Ready') {
-        this.Getting_Ready.update((prev) => [...prev, x]);
-      }
-    });
-  }
 
-  create_save() {
+  create_save(data: any) {
     window.localStorage.setItem('Potential_Value', JSON.stringify(this.Potential_Value()));
     window.localStorage.setItem('Focus', JSON.stringify(this.Focus()));
     window.localStorage.setItem('Contact_Made', JSON.stringify(this.Contact_Made()));
     window.localStorage.setItem('Offer_Sent', JSON.stringify(this.Offer_Sent()));
     window.localStorage.setItem('Getting_Ready', JSON.stringify(this.Getting_Ready()));
+    window.localStorage.setItem('new_deals_value', JSON.stringify(data));
   }
 
   getSavedDealsUsersData() {
@@ -178,18 +157,5 @@ export class Services {
     window.localStorage.setItem('Contact_Made', '');
     window.localStorage.setItem('Offer_Sent', '');
     window.localStorage.setItem('Getting_Ready', '');
-  }
-  drop(event: CdkDragDrop<DealsType[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-    this.create_save();
   }
 }

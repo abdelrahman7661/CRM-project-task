@@ -1,7 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { UserCard } from '../user-card/user-card';
 import { DealsType } from '../deals.interface';
-import { CdkDrag, CdkDropListGroup, CdkDropList } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag,
+  CdkDropListGroup,
+  CdkDropList,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDragDrop,
+} from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { NewDealPopup } from '../new-deal-popup/new-deal-popup';
 import { Services } from '../services/services';
@@ -15,8 +22,6 @@ import { Services } from '../services/services';
 export class Deals {
   protected services = inject(Services);
 
-  usersDealsData = signal<DealsType[]>([]);
-
   errorMessage = signal(false);
   loading = signal(true);
   searchValue = signal('');
@@ -24,6 +29,8 @@ export class Deals {
   showSearchResultCard = false;
   disableDropFunc = false;
   showNewDealPopup = false;
+  // >>>>>
+  deals_values: any = {};
 
   ngOnInit() {
     this.services.getUsersData().subscribe({
@@ -31,9 +38,9 @@ export class Deals {
         this.errorMessage.set(true);
       },
       complete: () => {
+        let x = window.localStorage.getItem('new_deals_value')!;
+        this.deals_values = JSON.parse(x);
         this.loading.set(false);
-        // console.log(this.services.users_Deals_Data());
-        // console.log(this.services.Potential_Value());
       },
     });
   }
@@ -63,7 +70,23 @@ export class Deals {
     this.showNewDealPopup = false;
     console.log('closed');
   }
+
   rest() {
     window.localStorage.clear();
+  }
+
+  drop(event: CdkDragDrop<DealsType[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+    console.log(this.deals_values);
+    this.services.create_save(this.deals_values);
   }
 }

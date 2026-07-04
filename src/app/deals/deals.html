@@ -28,10 +28,19 @@
         <div
           class="column-content"
           cdkDropList
-          [cdkDropListData]="services.Potential_Value()"
-          (cdkDropListDropped)="services.drop($event)"
+          [cdkDropListData]="deals_values.new_deals.potential"
+          (cdkDropListDropped)="drop($event)"
         >
-          @for (value of services.Potential_Value(); track $index) {
+          <!-- @for (value of services.Potential_Value(); track $index) {
+            <app-user-card
+              [userCardData]="value"
+              status="Potential Value"
+              cdkDrag
+              class="app-user-card"
+            />
+            <span class="space"></span>
+          } -->
+          @for (value of deals_values.new_deals.potential; track $index) {
             <app-user-card
               [userCardData]="value"
               status="Potential Value"
@@ -47,10 +56,10 @@
         <div
           class="column-content"
           cdkDropList
-          [cdkDropListData]="services.Focus()"
-          (cdkDropListDropped)="services.drop($event)"
+          [cdkDropListData]="deals_values.new_deals.focus"
+          (cdkDropListDropped)="drop($event)"
         >
-          @for (value of services.Focus(); track $index) {
+          @for (value of deals_values.new_deals.focus; track $index) {
             <app-user-card [userCardData]="value" status="Focus" cdkDrag class="app-user-card" />
             <span class="space"></span>
           }
@@ -59,12 +68,12 @@
       <div
         class="column-container"
         cdkDropList
-        [cdkDropListData]="services.Contact_Made()"
-        (cdkDropListDropped)="services.drop($event)"
+        [cdkDropListData]="deals_values.new_deals.contact_Made"
+        (cdkDropListDropped)="drop($event)"
       >
         <h3>Contact Made</h3>
         <div class="column-content">
-          @for (value of services.Contact_Made(); track $index) {
+          @for (value of deals_values.new_deals.contact_Made; track $index) {
             <app-user-card
               [userCardData]="value"
               status="Contact Made"
@@ -80,10 +89,10 @@
         <div
           class="column-content"
           cdkDropList
-          [cdkDropListData]="services.Offer_Sent()"
-          (cdkDropListDropped)="services.drop($event)"
+          [cdkDropListData]="deals_values.new_deals.offer_Sent"
+          (cdkDropListDropped)="drop($event)"
         >
-          @for (value of services.Offer_Sent(); track $index) {
+          @for (value of deals_values.new_deals.offer_Sent; track $index) {
             <app-user-card
               [userCardData]="value"
               status="Offer Sent"
@@ -99,10 +108,10 @@
         <div
           class="column-content"
           cdkDropList
-          [cdkDropListData]="services.Getting_Ready()"
-          (cdkDropListDropped)="services.drop($event)"
+          [cdkDropListData]="deals_values.new_deals.getting_Ready"
+          (cdkDropListDropped)="drop($event)"
         >
-          @for (value of services.Getting_Ready(); track $index) {
+          @for (value of deals_values.new_deals.getting_Ready; track $index) {
             <app-user-card
               [userCardData]="value"
               status="Getting Ready"

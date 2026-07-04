@@ -10,9 +10,10 @@ export interface DealsType {
   probability_status: string;
   state: string;
 }
+interface test {}
 export interface new_deal_value_type {
   new_deals: {
-    Potential: DealsType[];
+    potential: DealsType[];
     focus: DealsType[];
     contact_made: DealsType[];
     offer_sent: DealsType[];
