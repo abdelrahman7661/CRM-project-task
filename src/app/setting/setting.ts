@@ -16,8 +16,6 @@ export class Setting {
   }
   restSavedData() {
     window.localStorage.clear();
-    this.services.users_Deals_Data.set([]);
-    this.services.Potential_Value.set([]);
     this.popupState = false;
   }
   cancel() {

@@ -29,17 +29,18 @@ export class Deals {
   showSearchResultCard = false;
   disableDropFunc = false;
   showNewDealPopup = false;
-  // >>>>>
-  deals_values: any = {};
 
   ngOnInit() {
+    if (window.localStorage.getItem('new_deals_value')) {
+      this.services.get_saved_deals();
+      this.loading.set(false);
+    }
     this.services.getUsersData().subscribe({
       error: () => {
-        this.errorMessage.set(true);
+        window.alert('Check your internet connection...');
+        // this.errorMessage.set(true);
       },
       complete: () => {
-        let x = window.localStorage.getItem('new_deals_value')!;
-        this.deals_values = JSON.parse(x);
         this.loading.set(false);
       },
     });
@@ -86,7 +87,6 @@ export class Deals {
         event.currentIndex,
       );
     }
-    console.log(this.deals_values);
-    this.services.create_save(this.deals_values);
+    this.services.create_save(this.services.deals_values());
   }
 }
