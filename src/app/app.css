@@ -9,6 +9,10 @@ header {
 .logo img {
   height: 35px;
 }
+nav {
+  display: flex;
+  align-items: center;
+}
 .nav-btn {
   background-color: #4d5fab;
   padding: 5px 10px;
@@ -23,4 +27,11 @@ header {
 }
 .nav-btn:hover {
   outline: 2px solid #f882ff;
+}
+.user_image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-left: 10px;
+  object-fit: cover;
 }
