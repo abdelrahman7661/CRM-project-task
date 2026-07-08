@@ -13,7 +13,14 @@
     <a class="nav-btn" routerLink="Activites" routerLinkActive="active">Activites</a>
     <a class="nav-btn" routerLink="Statistices" routerLinkActive="active">Statistices</a>
     <a class="nav-btn" routerLink="Setting" routerLinkActive="active">Setting</a>
-    <img class="user_image" src="user_img.jpg" alt="" />
+    <img class="user_image" src="user_img.jpg" alt="" (click)="show_profile()" />
+    @if (profile_state) {
+      <div class="profile">
+        <a>About User</a>
+        <span></span>
+        <a>Log out</a>
+      </div>
+    }
   </nav>
 </header>
 

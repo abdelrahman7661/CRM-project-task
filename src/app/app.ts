@@ -7,4 +7,9 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {}
+export class App {
+  profile_state = false;
+  show_profile() {
+    this.profile_state = !this.profile_state;
+  }
+}
