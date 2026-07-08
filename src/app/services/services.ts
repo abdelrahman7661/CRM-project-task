@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
-import { DealsType, new_deal_value_type, New_Deals } from '../deals.interface';
+import { DealsType, new_deal_value_type } from '../deals.interface';
 
 @Injectable({
   providedIn: 'root',

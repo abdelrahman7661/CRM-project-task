@@ -13,19 +13,22 @@ export class NewDealPopup implements OnInit {
   private services = inject(Services);
   selected_deal_to_edit = input<DealsType>();
   close = output();
-  edit_mode = input<boolean>();
+  edit_mode = input<boolean>(false);
 
   ngOnInit() {
-    this.new_deal.patchValue({
-      first_name: this.selected_deal_to_edit()?.first_name,
-      last_name: this.selected_deal_to_edit()?.last_name,
-      // phone: parseInt(this.selected_deal_to_edit()?.phone),
-      phone: this.selected_deal_to_edit()?.phone,
-      email: this.selected_deal_to_edit()?.email,
-      company: this.selected_deal_to_edit()?.company,
-      probability_status: this.selected_deal_to_edit()?.probability_status,
-      status: this.selected_deal_to_edit()?.status,
-    });
+    // to get if there is date to edit
+    if (this.edit_mode()) {
+      this.new_deal.patchValue({
+        first_name: this.selected_deal_to_edit()?.first_name,
+        last_name: this.selected_deal_to_edit()?.last_name,
+        // phone: parseInt(this.selected_deal_to_edit()?.phone),
+        phone: this.selected_deal_to_edit()?.phone,
+        email: this.selected_deal_to_edit()?.email,
+        company: this.selected_deal_to_edit()?.company,
+        probability_status: this.selected_deal_to_edit()?.probability_status,
+        status: this.selected_deal_to_edit()?.status,
+      });
+    }
   }
 
   closePopup() {
@@ -53,7 +56,7 @@ export class NewDealPopup implements OnInit {
       Validators.min(0),
       Validators.max(100),
     ]),
-    status: new FormControl('Potential Value', Validators.required),
+    status: new FormControl('', Validators.required),
   });
 
   get error_first_name() {
@@ -85,22 +88,20 @@ export class NewDealPopup implements OnInit {
       date: this.selected_deal_to_edit()!.date,
       state: this.selected_deal_to_edit()!.state,
     };
-    console.log('form values from popup', new_deal_value);
     this.services.edit_deal(new_deal_value);
+    this.closePopup();
   }
   submit() {
     console.log('submit');
     if (this.new_deal.valid) {
-      console.log('form is valid');
       const idd = crypto.randomUUID();
       const date = new Date();
       let dealData = { ...this.new_deal.value, id: idd, date: date, state: 'New' }; // Adding the new Deal
       this.services.add_new_deal(this.new_deal.value.status!, dealData); // to check the type of new deal status type value
       this.new_deal.reset();
+      this.closePopup();
     } else {
-      console.log('form is invalid');
       this.new_deal.markAllAsTouched();
-      return;
     }
   }
 }

@@ -47,7 +47,7 @@ export class Deals {
       },
     });
   }
-
+  // to get the data from deal card to pass it to popup edit card
   edit_selected_deal(selected_deal: DealsType) {
     this.showNewDealPopup = true;
     this.edit_mode_check = true;

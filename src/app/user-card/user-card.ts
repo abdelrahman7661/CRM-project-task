@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { DealsType } from '../deals.interface';
 import { CommonModule } from '@angular/common';
 
