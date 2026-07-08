@@ -79,28 +79,23 @@ export class NewDealPopup implements OnInit {
   }
 
   confirm_deal_edit() {
-    console.log('confirm edit');
-    let nnn = {
+    let new_deal_value = {
       ...this.new_deal.value,
       id: this.selected_deal_to_edit()!.id,
       date: this.selected_deal_to_edit()!.date,
       state: this.selected_deal_to_edit()!.state,
     };
-    console.log('form values from popup', nnn);
-    this.services.edit_deal(nnn);
+    console.log('form values from popup', new_deal_value);
+    this.services.edit_deal(new_deal_value);
   }
   submit() {
     console.log('submit');
-    // edit mode hard coded
-    if (true) return;
     if (this.new_deal.valid) {
       console.log('form is valid');
       const idd = crypto.randomUUID();
       const date = new Date();
-      // Adding the new Deal
-      let dealData = { ...this.new_deal.value, id: idd, date: date, state: 'New' };
-      // to check the type of new deal status type value
-      this.services.add_new_deal(this.new_deal.value.status!, dealData);
+      let dealData = { ...this.new_deal.value, id: idd, date: date, state: 'New' }; // Adding the new Deal
+      this.services.add_new_deal(this.new_deal.value.status!, dealData); // to check the type of new deal status type value
       this.new_deal.reset();
     } else {
       console.log('form is invalid');

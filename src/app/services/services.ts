@@ -111,10 +111,9 @@ export class Services {
     this.create_save(deals_values);
   }
   edit_deal(deal_data: any) {
-    console.log('input to service function', deal_data);
-    const x = window.localStorage.getItem('new_deals_value') || '';
-    const saved = JSON.parse(x);
-    const all_deals = [
+    const old_value = window.localStorage.getItem('new_deals_value') || '';
+    const saved = JSON.parse(old_value);
+    const all_old_deals = [
       ...saved.new_deals.potential,
       ...saved.new_deals.offer_sent,
       ...saved.new_deals.getting_ready,
@@ -122,7 +121,7 @@ export class Services {
       ...saved.new_deals.contact_made,
     ];
 
-    const output = all_deals.map((value) => {
+    const output = all_old_deals.map((value) => {
       if (deal_data.id == value.id) {
         console.log(true, value);
         return deal_data;
@@ -131,7 +130,7 @@ export class Services {
       }
     });
     // -------------------
-    let new_deals_value: new_deal_value_type = {
+    let edited_deals_value: new_deal_value_type = {
       new_deals: {
         potential: [],
         focus: [],
@@ -142,20 +141,20 @@ export class Services {
     };
     output.map((value: DealsType) => {
       if (value.status == 'Potential Value') {
-        new_deals_value.new_deals.potential.push(value);
+        edited_deals_value.new_deals.potential.push(value);
       } else if (value.status == 'Focus') {
-        new_deals_value.new_deals.focus.push(value);
+        edited_deals_value.new_deals.focus.push(value);
       } else if (value.status == 'Contact Made') {
-        new_deals_value.new_deals.contact_made.push(value);
+        edited_deals_value.new_deals.contact_made.push(value);
       } else if (value.status == 'Offer Sent') {
-        new_deals_value.new_deals.offer_sent.push(value);
+        edited_deals_value.new_deals.offer_sent.push(value);
       } else if (value.status == 'Getting Ready') {
-        new_deals_value.new_deals.getting_ready.push(value);
+        edited_deals_value.new_deals.getting_ready.push(value);
       }
     });
-    console.log(new_deals_value);
+    console.log(edited_deals_value);
     // save to local storage
-    this.create_save(new_deals_value);
+    this.create_save(edited_deals_value);
   }
 
   create_save(data: any) {

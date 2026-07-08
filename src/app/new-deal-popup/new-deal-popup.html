@@ -64,11 +64,11 @@
         </div>
       </div>
       <div class="add-btn">
-        <!-- @if (edit_mode()) {
+        @if (edit_mode()) {
           <button type="button" (click)="confirm_deal_edit()">Confirm The Edit</button>
         } @else {
           <button type="submit">Add New Deal</button>
-        } -->
+        }
       </div>
       <div class="error">
         @if (error_first_name) {
@@ -82,6 +82,6 @@
         }
       </div>
     </form>
-    <button (click)="confirm_deal_edit()">Confirm The Edit</button>
+    <!-- <button (click)="confirm_deal_edit()">Confirm The Edit</button> -->
   </div>
 </div>
