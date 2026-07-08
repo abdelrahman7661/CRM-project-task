@@ -1,6 +1,7 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Services } from '../services/services';
+import { DealsType } from '../deals.interface';
 
 @Component({
   selector: 'app-new-deal-popup',
@@ -8,13 +9,29 @@ import { Services } from '../services/services';
   templateUrl: './new-deal-popup.html',
   styleUrl: './new-deal-popup.css',
 })
-export class NewDealPopup {
+export class NewDealPopup implements OnInit {
   private services = inject(Services);
+  selected_deal_to_edit = input<DealsType>();
   close = output();
+  edit_mode = input<boolean>();
+
+  ngOnInit() {
+    this.new_deal.patchValue({
+      first_name: this.selected_deal_to_edit()?.first_name,
+      last_name: this.selected_deal_to_edit()?.last_name,
+      // phone: parseInt(this.selected_deal_to_edit()?.phone),
+      phone: this.selected_deal_to_edit()?.phone,
+      email: this.selected_deal_to_edit()?.email,
+      company: this.selected_deal_to_edit()?.company,
+      probability_status: this.selected_deal_to_edit()?.probability_status,
+      status: this.selected_deal_to_edit()?.status,
+    });
+  }
 
   closePopup() {
     this.close.emit();
   }
+  // config for input forms
   max_length_input = 20;
 
   new_deal = new FormGroup({
@@ -61,7 +78,21 @@ export class NewDealPopup {
     );
   }
 
+  confirm_deal_edit() {
+    console.log('confirm edit');
+    let nnn = {
+      ...this.new_deal.value,
+      id: this.selected_deal_to_edit()!.id,
+      date: this.selected_deal_to_edit()!.date,
+      state: this.selected_deal_to_edit()!.state,
+    };
+    console.log('form values from popup', nnn);
+    this.services.edit_deal(nnn);
+  }
   submit() {
+    console.log('submit');
+    // edit mode hard coded
+    if (true) return;
     if (this.new_deal.valid) {
       console.log('form is valid');
       const idd = crypto.randomUUID();

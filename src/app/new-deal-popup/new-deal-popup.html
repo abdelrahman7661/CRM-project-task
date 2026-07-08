@@ -1,7 +1,11 @@
 <div class="container">
   <div class="popup">
     <header>
-      <h2>New Deal</h2>
+      @if (edit_mode()) {
+        <h2>Edit Deal</h2>
+      } @else {
+        <h2>New Deal</h2>
+      }
       <button class="exit-btn" (click)="closePopup()">X</button>
     </header>
     <form [formGroup]="new_deal" (ngSubmit)="submit()">
@@ -28,7 +32,7 @@
       <div class="row">
         <div class="inputs">
           <label for="phone">Phone</label>
-          <input id="phone" type="number" formControlName="phone" />
+          <input id="phone" type="text" formControlName="phone" />
         </div>
         <div class="inputs">
           <label for="email">Email</label>
@@ -60,7 +64,11 @@
         </div>
       </div>
       <div class="add-btn">
-        <button>Add New Deal</button>
+        <!-- @if (edit_mode()) {
+          <button type="button" (click)="confirm_deal_edit()">Confirm The Edit</button>
+        } @else {
+          <button type="submit">Add New Deal</button>
+        } -->
       </div>
       <div class="error">
         @if (error_first_name) {
@@ -74,5 +82,6 @@
         }
       </div>
     </form>
+    <button (click)="confirm_deal_edit()">Confirm The Edit</button>
   </div>
 </div>

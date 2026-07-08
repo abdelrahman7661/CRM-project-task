@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { DealsType } from '../deals.interface';
 import { CommonModule } from '@angular/common';
 
@@ -11,8 +11,11 @@ import { CommonModule } from '@angular/common';
 export class UserCard {
   userCardData = input<DealsType>();
   status = input<string>('');
+  // edit_popup = model(); // this is a model two way binding v
+  edit = output<DealsType>();
 
-  edit_deal() {
-    console.log('Edit the deal');
+  export_selected_deal_to_edit() {
+    // this.edit_popup.set(true);
+    this.edit.emit(this.userCardData()!);
   }
 }

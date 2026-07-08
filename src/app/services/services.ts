@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
-import { DealsType, new_deal_value_type } from '../deals.interface';
+import { DealsType, new_deal_value_type, New_Deals } from '../deals.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,6 @@ export class Services {
   api = 'https://my-json-server.typicode.com/hussein-hashima/contacts/db';
 
   users_Deals_Data = signal<DealsType[]>([]);
-  testFromService = signal({});
   new_deals_value: new_deal_value_type = {
     new_deals: {
       potential: [],
@@ -21,8 +20,15 @@ export class Services {
       getting_ready: [],
     },
   };
-  test = signal({});
-  deals_values = signal<any>({});
+  deals_values = signal<new_deal_value_type>({
+    new_deals: {
+      potential: [],
+      focus: [],
+      contact_made: [],
+      offer_sent: [],
+      getting_ready: [],
+    },
+  });
 
   getUsersData() {
     // to rest the deals
@@ -34,19 +40,17 @@ export class Services {
           // to check if there is any data saved in local storage or not to save
           // the api data
           if (!window.localStorage.getItem('new_deals_value')) {
-            this.filter_api_data();
+            this.filter_api_data(this.users_Deals_Data());
             this.create_save(this.new_deals_value);
+            console.log('get data from api');
           }
-        },
-        complete: () => {
-          // this.get_saved_deals();
         },
       }),
     );
   }
 
-  filter_api_data() {
-    this.users_Deals_Data().map((value) => {
+  filter_api_data(input_data: any) {
+    input_data.map((value: DealsType) => {
       if (value.status == 'Potential Value') {
         this.new_deals_value.new_deals.potential.push(value);
       } else if (value.status == 'Focus') {
@@ -62,10 +66,30 @@ export class Services {
     // save to local storage
     this.create_save(this.new_deals_value);
   }
+
+  // filter_api_data() {
+  //   this.users_Deals_Data().map((value) => {
+  //     if (value.status == 'Potential Value') {
+  //       this.new_deals_value.new_deals.potential.push(value);
+  //     } else if (value.status == 'Focus') {
+  //       this.new_deals_value.new_deals.focus.push(value);
+  //     } else if (value.status == 'Contact Made') {
+  //       this.new_deals_value.new_deals.contact_made.push(value);
+  //     } else if (value.status == 'Offer Sent') {
+  //       this.new_deals_value.new_deals.offer_sent.push(value);
+  //     } else if (value.status == 'Getting Ready') {
+  //       this.new_deals_value.new_deals.getting_ready.push(value);
+  //     }
+  //   });
+  //   // save to local storage
+  //   this.create_save(this.new_deals_value);
+  // }
+
   get_saved_deals() {
     let x = window.localStorage.getItem('new_deals_value')!;
     this.deals_values.set(JSON.parse(x));
   }
+
   add_new_deal(status: string, deal_Data: any) {
     // get the old saved values
     let value = window.localStorage.getItem('new_deals_value')!;
@@ -82,17 +106,60 @@ export class Services {
     } else if (status == 'Getting Ready') {
       deals_values.new_deals.getting_ready.push(deal_Data);
     }
-    this.test.set(this.new_deals_value);
 
-    console.log(deals_values);
     // update the old deals values
     this.create_save(deals_values);
+  }
+  edit_deal(deal_data: any) {
+    console.log('input to service function', deal_data);
+    const x = window.localStorage.getItem('new_deals_value') || '';
+    const saved = JSON.parse(x);
+    const all_deals = [
+      ...saved.new_deals.potential,
+      ...saved.new_deals.offer_sent,
+      ...saved.new_deals.getting_ready,
+      ...saved.new_deals.focus,
+      ...saved.new_deals.contact_made,
+    ];
+
+    const output = all_deals.map((value) => {
+      if (deal_data.id == value.id) {
+        console.log(true, value);
+        return deal_data;
+      } else {
+        return value;
+      }
+    });
+    // -------------------
+    let new_deals_value: new_deal_value_type = {
+      new_deals: {
+        potential: [],
+        focus: [],
+        contact_made: [],
+        offer_sent: [],
+        getting_ready: [],
+      },
+    };
+    output.map((value: DealsType) => {
+      if (value.status == 'Potential Value') {
+        new_deals_value.new_deals.potential.push(value);
+      } else if (value.status == 'Focus') {
+        new_deals_value.new_deals.focus.push(value);
+      } else if (value.status == 'Contact Made') {
+        new_deals_value.new_deals.contact_made.push(value);
+      } else if (value.status == 'Offer Sent') {
+        new_deals_value.new_deals.offer_sent.push(value);
+      } else if (value.status == 'Getting Ready') {
+        new_deals_value.new_deals.getting_ready.push(value);
+      }
+    });
+    console.log(new_deals_value);
+    // save to local storage
+    this.create_save(new_deals_value);
   }
 
   create_save(data: any) {
     window.localStorage.setItem('new_deals_value', JSON.stringify(data));
     this.get_saved_deals();
   }
-
-  rest() {}
 }

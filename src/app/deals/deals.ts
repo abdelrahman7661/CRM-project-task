@@ -29,6 +29,8 @@ export class Deals {
   showSearchResultCard = false;
   disableDropFunc = false;
   showNewDealPopup = false;
+  selected_deal_data_1: DealsType | undefined;
+  edit_mode_check = false;
 
   ngOnInit() {
     if (window.localStorage.getItem('new_deals_value')) {
@@ -46,14 +48,27 @@ export class Deals {
     });
   }
 
+  edit_selected_deal(selected_deal: DealsType) {
+    this.showNewDealPopup = true;
+    this.edit_mode_check = true;
+    this.selected_deal_data_1 = selected_deal;
+  }
+
   search_v2() {
-    this.showSearchResultCard = true;
-    let searchResultValue = this.services.users_Deals_Data().filter((user) => {
-      return user.first_name.toLowerCase().includes(this.searchValue());
+    let all_deals = [
+      ...this.services.deals_values().new_deals.potential,
+      ...this.services.deals_values().new_deals.offer_sent,
+      ...this.services.deals_values().new_deals.getting_ready,
+      ...this.services.deals_values().new_deals.focus,
+      ...this.services.deals_values().new_deals.contact_made,
+    ];
+    let result = all_deals.filter((value) => {
+      return value.first_name.toLowerCase().includes(this.searchValue());
     });
-    this.searchResultValue.set(searchResultValue);
+    this.showSearchResultCard = true;
+    this.searchResultValue.set(result);
     // when to show the search card
-    if (this.searchValue().length == 0 || searchResultValue.length == 0) {
+    if (this.searchValue().length == 0 || result.length == 0) {
       this.showSearchResultCard = false;
     }
   }
@@ -63,12 +78,14 @@ export class Deals {
     this.search_v2();
   }
 
-  deal_popup() {
+  add_deal_popup() {
+    this.selected_deal_data_1 = undefined;
     this.showNewDealPopup = true;
   }
 
   close_deal_popup() {
     this.showNewDealPopup = false;
+    this.edit_mode_check = false;
     console.log('closed');
   }
 

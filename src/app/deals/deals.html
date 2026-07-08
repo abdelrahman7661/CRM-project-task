@@ -11,13 +11,18 @@
     @if (searchValue().length !== 0) {
       <button class="search-btn" (click)="clearSearchValue()">Clear</button>
     }
-    <button class="add-new-deal-btn" (click)="deal_popup()">Add New Deal</button>
+    <button class="add-new-deal-btn" (click)="add_deal_popup()">Add New Deal</button>
   </div>
   <!-- --------------search result area -->
   @if (showSearchResultCard) {
     <div class="search-result">
       @for (value of searchResultValue(); track $index) {
-        <app-user-card class="user-card" [userCardData]="value" class="tests" />
+        <app-user-card
+          [userCardData]="value"
+          class="user-card"
+          class="tests"
+          (edit)="edit_selected_deal($event)"
+        />
       }
     </div>
   }
@@ -46,6 +51,7 @@
               status="Potential Value"
               cdkDrag
               class="app-user-card"
+              (edit)="edit_selected_deal($event)"
             />
             <span class="space"></span>
           }
@@ -60,7 +66,13 @@
           (cdkDropListDropped)="drop($event)"
         >
           @for (value of this.services.deals_values().new_deals.focus; track $index) {
-            <app-user-card [userCardData]="value" status="Focus" cdkDrag class="app-user-card" />
+            <app-user-card
+              [userCardData]="value"
+              status="Focus"
+              cdkDrag
+              class="app-user-card"
+              (edit)="edit_selected_deal($event)"
+            />
             <span class="space"></span>
           }
         </div>
@@ -79,6 +91,7 @@
               status="Contact Made"
               cdkDrag
               class="app-user-card"
+              (edit)="edit_selected_deal($event)"
             />
             <span class="space"></span>
           }
@@ -98,6 +111,7 @@
               status="Offer Sent"
               cdkDrag
               class="app-user-card"
+              (edit)="edit_selected_deal($event)"
             />
             <span class="space"></span>
           }
@@ -117,6 +131,7 @@
               status="Getting Ready"
               cdkDrag
               class="app-user-card"
+              (edit)="edit_selected_deal($event)"
             />
             <span class="space"></span>
           }
@@ -133,5 +148,9 @@
 </div>
 <!-- new deal popup -->
 @if (showNewDealPopup) {
-  <app-new-deal-popup #child (close)="close_deal_popup()" />
+  <app-new-deal-popup
+    (close)="close_deal_popup()"
+    [selected_deal_to_edit]="selected_deal_data_1"
+    [edit_mode]="edit_mode_check"
+  />
 }

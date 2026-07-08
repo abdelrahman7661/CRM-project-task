@@ -1,7 +1,7 @@
 <div class="user-card">
   <span class="name">
     <p class="user-name">{{ userCardData()?.first_name }} {{ userCardData()?.last_name }}</p>
-    <img src="edit.png" alt="edit" (click)="edit_deal()" />
+    <img src="edit.png" alt="edit" (click)="export_selected_deal_to_edit()" />
   </span>
   <div class="status">
     <span class="state">{{ userCardData()?.state }}</span>
